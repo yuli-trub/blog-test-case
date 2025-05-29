@@ -2,7 +2,6 @@
 @import "./mixins";
 
 .blogs {
-  padding: 64px 32px;
   @include flex(column, center, space-between, 24px);
 
   &__information {

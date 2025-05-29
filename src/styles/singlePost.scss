@@ -1,0 +1,12 @@
+@import "./variables";
+@import "./mixins";
+
+.post {
+  &__header {
+    @include flex(row, space-between, center);
+  }
+
+  &__back {
+    @include flex(row, center, center, 8px);
+  }
+}

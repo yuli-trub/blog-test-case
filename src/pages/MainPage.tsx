@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  fetchPosts,
-  toggleLike,
-  toggleDislike,
-} from "../features/posts/postsSlice";
+import { fetchPosts } from "../features/posts/postsSlice";
 import type { RootState, AppDispatch } from "../store";
+import {
+  initializeReactions,
+  toggleReaction,
+} from "../features/reactions/reactionsSlice";
 
 import PostCard from "../components/PostCard";
 import SearchBar from "../components/SearchBar";
@@ -27,12 +27,20 @@ const MainPage = () => {
     dispatch(fetchPosts());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (status === "succeeded") {
+      posts.forEach((post) => {
+        dispatch(initializeReactions({ postId: post.id }));
+      });
+    }
+  }, [dispatch, posts, status]);
+
   const handleLikes = (id: number) => {
-    dispatch(toggleLike(id));
+    dispatch(toggleReaction({ postId: id, type: "like" }));
   };
 
   const handleDislikes = (id: number) => {
-    dispatch(toggleDislike(id));
+    dispatch(toggleReaction({ postId: id, type: "dislike" }));
   };
 
   return (

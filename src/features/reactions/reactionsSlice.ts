@@ -3,12 +3,17 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 type ReactionType = "like" | "dislike";
 
-interface ReactionState {
-  [postId: number]: {
+interface ReactionEntry {
+  liked: boolean;
+  disliked: boolean;
+  reactions: {
     like: number;
     dislike: number;
-    userReaction: ReactionType | null;
   };
+}
+
+interface ReactionState {
+  [postId: number]: ReactionEntry;
 }
 
 const initialState: ReactionState = {};
@@ -21,36 +26,42 @@ const reactionsSlice = createSlice({
       const { postId } = action.payload;
       if (!state[postId]) {
         state[postId] = {
-          like: Math.floor(Math.random() * 51),
-          dislike: Math.floor(Math.random() * 51),
-          userReaction: null,
+          liked: false,
+          disliked: false,
+          reactions: {
+            like: Math.floor(Math.random() * 50),
+            dislike: Math.floor(Math.random() * 50),
+          },
         };
       }
     },
-    reactToPost: (
+    toggleReaction: (
       state,
       action: PayloadAction<{ postId: number; type: ReactionType }>
     ) => {
       const { postId, type } = action.payload;
-      const current = state[postId];
-      if (!current) return;
+      const post = state[postId];
+      if (!post) return;
 
-      const opposite = type === "like" ? "dislike" : "like";
+      const isLike = type === "like";
+      const likedKey = isLike ? "liked" : "disliked";
+      const oppositeKey = isLike ? "disliked" : "liked";
 
-      if (current.userReaction === opposite) {
-        current[opposite]--;
-      }
-
-      if (current.userReaction === type) {
-        current[type]--;
-        current.userReaction = null;
+      if (post[likedKey]) {
+        post.reactions[type]--;
+        post[likedKey] = false;
       } else {
-        current[type]++;
-        current.userReaction = type;
+        post.reactions[type]++;
+        post[likedKey] = true;
+
+        if (post[oppositeKey]) {
+          post.reactions[isLike ? "dislike" : "like"]--;
+          post[oppositeKey] = false;
+        }
       }
     },
   },
 });
 
-export const { initializeReactions, reactToPost } = reactionsSlice.actions;
+export const { initializeReactions, toggleReaction } = reactionsSlice.actions;
 export default reactionsSlice.reducer;

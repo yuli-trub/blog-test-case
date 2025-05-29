@@ -3,34 +3,46 @@ import DislikesIcon from "../assets/dislike.svg";
 import RedDislikesIcon from "../assets/red-dislike.svg";
 import GreenLikesIcon from "../assets/green-like.svg";
 
-import type { Post } from "../types/Post";
 import "../styles/reactions.scss";
 
 interface ReactionsProps {
-  post: Post;
+  postId: number;
+  liked: boolean;
+  disliked: boolean;
+  reactions: {
+    like: number;
+    dislike: number;
+  };
   onLike: (id: number) => void;
   onDislike: (id: number) => void;
 }
 
-const Reactions = ({ post, onLike, onDislike }: ReactionsProps) => {
+const Reactions = ({
+  postId,
+  liked,
+  disliked,
+  reactions,
+  onLike,
+  onDislike,
+}: ReactionsProps) => {
   return (
     <>
       <div className="reactions">
-        <div className="reactions__reaction" onClick={() => onLike(post.id)}>
+        <div className="reactions__reaction" onClick={() => onLike(postId)}>
           <img
-            src={post.liked ? GreenLikesIcon : LikesIcon}
+            src={liked ? GreenLikesIcon : LikesIcon}
             alt="like"
             className="reactions__icon"
           />
-          {post.reactions.like}
+          {reactions.like}
         </div>
-        <div className="reactions__reaction" onClick={() => onDislike(post.id)}>
+        <div className="reactions__reaction" onClick={() => onDislike(postId)}>
           <img
-            src={post.disliked ? RedDislikesIcon : DislikesIcon}
+            src={disliked ? RedDislikesIcon : DislikesIcon}
             alt="dislike"
             className="reactions__icon"
           />
-          {post.reactions.dislike}
+          {reactions.dislike}
         </div>
       </div>
     </>

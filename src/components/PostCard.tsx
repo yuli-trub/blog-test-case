@@ -1,6 +1,9 @@
 import type { Post } from "../types/Post";
+import { useSelector } from "react-redux";
+import type { RootState } from "../store";
 import Reactions from "./Reactions";
 import "../styles/PostCard.scss";
+import { Link } from "react-router-dom";
 
 interface PostCardProps {
   post: Post;
@@ -10,6 +13,8 @@ interface PostCardProps {
 }
 
 const PostCard = ({ post, index, onLike, onDislike }: PostCardProps) => {
+  const reaction = useSelector((state: RootState) => state.reactions[post.id]);
+
   return (
     <div
       className={`card-grid__item ${
@@ -26,18 +31,34 @@ const PostCard = ({ post, index, onLike, onDislike }: PostCardProps) => {
       >
         <div className="card__top-wrapper">
           <h2 className="card__title">{post.title}</h2>
-          {index === 0 && (
-            <Reactions post={post} onLike={onLike} onDislike={onDislike} />
+          {index === 0 && reaction && (
+            <Reactions
+              postId={post.id}
+              liked={reaction.liked || false}
+              disliked={reaction.disliked || false}
+              reactions={reaction.reactions}
+              onLike={onLike}
+              onDislike={onDislike}
+            />
           )}
         </div>
         {index === 0 && <p className="card__description">{post.body}</p>}
-        <div className="card__bottom">
-          {index !== 0 && (
-            <Reactions post={post} onLike={onLike} onDislike={onDislike} />
+        <div
+          className={`card__bottom ${index === 0 ? "card__bottom--full" : ""}`}
+        >
+          {index !== 0 && reaction && (
+            <Reactions
+              postId={post.id}
+              liked={reaction.liked}
+              disliked={reaction.disliked}
+              reactions={reaction.reactions}
+              onLike={onLike}
+              onDislike={onDislike}
+            />
           )}
-          <a href={`/${post.id}`} className="card__link">
+          <Link to={`/${post.id}`} className="card__link">
             Читать далее
-          </a>
+          </Link>
         </div>
       </div>
     </div>

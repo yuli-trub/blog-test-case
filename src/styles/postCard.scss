@@ -69,12 +69,16 @@
   &__title {
     font-size: 28px;
     font-weight: 700;
-    max-width: 990px;
+    max-width: 950px;
   }
 
   &__bottom {
     @include flex(row, space-between, center);
     width: 100%;
+
+    &--full {
+      justify-content: flex-end;
+    }
   }
 
   &__link {
