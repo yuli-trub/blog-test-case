@@ -1,12 +1,24 @@
 @import "./variables";
 @import "./mixins";
 
-.post {
-  &__header {
-    @include flex(row, space-between, center);
-  }
-
+.header {
+  @include flex(row, space-between, center);
+  margin-bottom: 32px;
   &__back {
     @include flex(row, center, center, 8px);
+  }
+}
+
+.post {
+  @include flex(column, center, center, 48px);
+  &__content {
+    @include flex(column, center, center, 48px);
+    max-width: 850px;
+  }
+  &__image {
+    width: 100%;
+    height: 477px;
+    object-fit: cover;
+    border-radius: 12px;
   }
 }

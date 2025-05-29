@@ -56,10 +56,10 @@ const SinglePost = () => {
 
   return (
     <>
-      <header className="post__header">
-        <Link to="/" className="post__back">
-          <img src={BackArrow} alt="back arrow" className="post__back-icon" />
-          <p className="post__back-text">Вернуться к статьям</p>
+      <header className="header">
+        <Link to="/" className="header__back">
+          <img src={BackArrow} alt="back arrow" className="header__back-icon" />
+          <p className="header__back-text">Вернуться к статьям</p>
         </Link>
         {reaction && (
           <Reactions
