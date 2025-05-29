@@ -1,0 +1,18 @@
+@import "./variables";
+@import "./mixins";
+
+.reactions {
+  @include flex(row, space-between, center, 24px);
+
+  &__reaction {
+    @include flex(row, space-between, center, 8px);
+    color: grey;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  &__icon {
+    height: 24px;
+    width: auto;
+  }
+}

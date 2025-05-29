@@ -10,7 +10,7 @@ export const fetchPosts = async (searchTerm?: string) => {
       )
     : data;
 
-  return filtered.slice(0, 10).map((post: any) => ({
+  return filtered.slice(0, 5).map((post: any) => ({
     ...post,
     image: `https://placehold.co/600x400?text=Post+${post.id}`,
     reactions: {

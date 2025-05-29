@@ -1,6 +1,10 @@
 import LikesIcon from "../assets/like-icon.svg";
 import DislikesIcon from "../assets/dislike.svg";
+import RedDislikesIcon from "../assets/red-dislike.svg";
+import GreenLikesIcon from "../assets/green-like.svg";
+
 import type { Post } from "../types/Post";
+import "../styles/reactions.scss";
 
 interface ReactionsProps {
   post: Post;
@@ -11,26 +15,20 @@ interface ReactionsProps {
 const Reactions = ({ post, onLike, onDislike }: ReactionsProps) => {
   return (
     <>
-      <div className="card__reactions">
-        <div
-          className={`card__reaction ${
-            post.liked ? "card__reaction--like" : ""
-          }`}
-          onClick={() => onLike(post.id)}
-        >
-          <img src={LikesIcon} alt="like" className="card__rection-icon" />
+      <div className="reactions">
+        <div className="reactions__reaction" onClick={() => onLike(post.id)}>
+          <img
+            src={post.liked ? GreenLikesIcon : LikesIcon}
+            alt="like"
+            className="reactions__icon"
+          />
           {post.reactions.like}
         </div>
-        <div
-          className={`card__reaction ${
-            post.disliked ? "card__reaction--dislike" : ""
-          }`}
-          onClick={() => onDislike(post.id)}
-        >
+        <div className="reactions__reaction" onClick={() => onDislike(post.id)}>
           <img
-            src={DislikesIcon}
+            src={post.disliked ? RedDislikesIcon : DislikesIcon}
             alt="dislike"
-            className="card__rection-icon"
+            className="reactions__icon"
           />
           {post.reactions.dislike}
         </div>
