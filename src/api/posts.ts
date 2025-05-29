@@ -2,9 +2,15 @@ import axios from "axios";
 
 const API_URL = "https://jsonplaceholder.typicode.com";
 
-export const fetchPosts = async () => {
+export const fetchPosts = async (searchTerm?: string) => {
   const { data } = await axios.get(`${API_URL}/posts`);
-  return data.slice(0, 10).map((post: any) => ({
+  const filtered = searchTerm
+    ? data.filter(
+        (post: any) => post.title.toLowerCase() === searchTerm.toLowerCase()
+      )
+    : data;
+
+  return filtered.slice(0, 10).map((post: any) => ({
     ...post,
     image: `https://placehold.co/600x400?text=Post+${post.id}`,
     reactions: {

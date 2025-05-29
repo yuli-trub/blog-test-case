@@ -6,7 +6,7 @@ const AppRouter = () => (
   <Router>
     <Routes>
       <Route path="/" element={<MainPage />} />
-      <Route path="/blog/:id" element={<SingleBlogPage />} />
+      <Route path="/:id" element={<SingleBlogPage />} />
     </Routes>
   </Router>
 );

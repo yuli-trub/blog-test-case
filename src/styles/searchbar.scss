@@ -1,0 +1,27 @@
+@import "./variables";
+@import "./mixins";
+
+.search-bar {
+  @include flex(row, space-between, center, 16px);
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid $border-color;
+  border-radius: 6px;
+
+  &__input {
+    flex-grow: 1;
+    padding: 4px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &__icon {
+    width: 24px;
+    height: 24px;
+  }
+}

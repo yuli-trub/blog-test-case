@@ -1,3 +1,21 @@
 @import "./variables";
 @import "./mixins";
 @import "./resets";
+
+body {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 60px;
+  font-weight: 600;
+  text-align: center;
+}
+
+p {
+  font-size: 24px;
+  margin: 0 auto;
+  font-weight: 400;
+  letter-spacing: 0.02rem;
+}

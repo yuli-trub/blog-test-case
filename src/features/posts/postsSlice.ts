@@ -22,9 +22,12 @@ const initialState: PostsState = {
 };
 
 // fetching
-export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
-  return await fetchPostsAPI();
-});
+export const fetchPosts = createAsyncThunk(
+  "posts/fetchPosts",
+  async (searchTerm?: string) => {
+    return await fetchPostsAPI(searchTerm);
+  }
+);
 
 export const fetchPostById = createAsyncThunk(
   "posts/fetchPostById",

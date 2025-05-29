@@ -1,5 +1,4 @@
-import ArrowIcon from "../assets/arrow-left.svg";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   fetchPosts,
@@ -7,8 +6,11 @@ import {
   toggleDislike,
 } from "../features/posts/postsSlice";
 import type { RootState, AppDispatch } from "../store";
-import LikesIcon from "../assets/like-icon.svg";
-import DislikesIcon from "../assets/dislike.svg";
+
+import PostCard from "../components/PostCard";
+import SearchBar from "../components/SearchBar";
+
+import "../styles/mainPage.scss";
 
 const MainPage = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -16,6 +18,11 @@ const MainPage = () => {
     (state: RootState) => state.posts
   );
 
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearch = () => {
+    dispatch(fetchPosts(searchTerm.trim()));
+  };
   useEffect(() => {
     dispatch(fetchPosts());
   }, [dispatch]);
@@ -37,59 +44,35 @@ const MainPage = () => {
       </p>
 
       <section className="blogs__list">
-        <div className="search-bar">
-          <img src={ArrowIcon} className="search-bar__icon" alt="Arrob back" />
-          <input
-            type="text"
-            placeholder="Поиск по названию статьи"
-            className="search-bar__input"
-          />
-        </div>
+        <SearchBar
+          value={searchTerm}
+          onChange={setSearchTerm}
+          onSearch={handleSearch}
+        />
 
-        <div className="card-grid">
-          {posts.slice(0, 10).map((post, index) => (
-            <div
-              key={index}
-              className={`card-grid__item ${
-                index === 0 ? "card-grid__item--full" : ""
-              }`}
-            >
-              <div className="card__content">
-                <div className="card__top-wrapper">
-                  <h2 className="card__title">{post.title}</h2>
-                  <div className="card__reactions">
-                    <div
-                      className={`card__reaction ${
-                        post.liked ? "card__reaction--like" : ""
-                      }`}
-                      onClick={() => handleLikes(post.id)}
-                    >
-                      <img
-                        src={LikesIcon}
-                        alt="like"
-                        className="card__rection-icon"
-                      />
-                      {post.reactions.like}
-                    </div>
-                    <div
-                      className={`card__reaction ${
-                        post.disliked ? "card__reaction--dislike" : ""
-                      }`}
-                      onClick={() => handleDislikes(post.id)}
-                    >
-                      <img
-                        src={DislikesIcon}
-                        alt="like"
-                        className="card__rection-icon"
-                      />
-                      {post.reactions.dislike}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+        {status === "loading" && (
+          <div className="blogs__loading">
+            <div className="spinner"></div>
+            Загрузка...
+          </div>
+        )}
+        {status === "failed" && (
+          <div className="blogs__error">Ошибка: {error}</div>
+        )}
+
+        {status === "succeeded" && (
+          <div className="card-grid">
+            {posts.map((post, index) => (
+              <PostCard
+                key={post.id}
+                post={post}
+                index={index}
+                onLike={handleLikes}
+                onDislike={handleDislikes}
+              />
+            ))}
+          </div>
+        )}
       </section>
     </main>
   );
