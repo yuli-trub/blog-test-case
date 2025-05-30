@@ -3,7 +3,9 @@ import MainPage from "../pages/MainPage";
 import SingleBlogPage from "../pages/SingleBlogPage";
 
 const AppRouter = () => (
-  <Router>
+  <Router
+    basename={import.meta.env.MODE === "development" ? "/" : "/blog-test-case"}
+  >
     <Routes>
       <Route path="/" element={<MainPage />} />
       <Route path="/:id" element={<SingleBlogPage />} />
